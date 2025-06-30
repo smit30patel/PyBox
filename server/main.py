@@ -1,8 +1,9 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Body
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import os, shutil, uuid
+# from pydentic import BaseModel
 
 app = FastAPI()
 
@@ -19,27 +20,27 @@ DATASET_DIR = "dataset"
 os.makedirs(DATASET_DIR, exist_ok=True)
 file_registry = {}  # {file_id: {filename, owner, path, share_id}}
 
-@app.post("/api/upload")
+@app.post("/uploadfile/")
 async def upload_file(file: UploadFile = File(...)):
-    file_id = str(uuid.uuid4())
-    file_path = os.path.join(DATASET_DIR, f"{file_id}_{file.filename}")
-    with open(file_path, "wb") as f:
-        shutil.copyfileobj(file.file, f)
+    # file_id = str(uuid.uuid4())
+    # file_path = os.path.join(DATASET_DIR, f"{file.filename}-{file_id}")
+    # with open(file_path, "wb") as f:
+    #     shutil.copyfileobj(file.file, f)
+    # file_registry[file_id] = {
+    #     "id": file_id, 
+    #     "filename": file.filename,
+    #     "path": file_path,
+    #     "owner": "user@example.com",   
+    #     "share_id": None
+    # }
+    # return JSONResponse(status_code=200, content={"Success": "Uploaded File Successfully", "filename": file.filename})
+    print("Working......")  
 
-    file_registry[file_id] = {
-        "id": file_id,
-        "filename": file.filename,
-        "path": file_path,
-        "owner": "user@example.com",  # TODO: Replace with actual auth later
-        "share_id": None
-    }
-    return {"file_id": file_id}
-
-@app.get("/api/my-files")
+@app.get("/my-files")
 def my_files():
     # return [f for f in file_registry.values() if f["owner"] == "user@example.com"]
     return file_registry.values()
-@app.post("/api/share/{file_id}")
+@app.post("/share/{file_id}")
 def share_file(file_id: str):
     if file_id not in file_registry:
         return JSONResponse(status_code=404, content={"error": "File not found"})
@@ -48,14 +49,14 @@ def share_file(file_id: str):
     file_registry[file_id]["share_id"] = share_id
     return {"share_id": share_id}
 
-@app.get("/api/shared/{share_id}")
+@app.get("/shared/{share_id}")
 def get_shared_file(share_id: str):
     for f in file_registry.values():
         if f["share_id"] == share_id:
             return {"filename": f["filename"], "share_id": share_id}
     return JSONResponse(status_code=404, content={"error": "Invalid share link"})
 
-@app.get("/api/download/{share_id}")
+@app.get("/download/{share_id}")
 def download_shared_file(share_id: str):
     for f in file_registry.values():
         if f["share_id"] == share_id and os.path.exists(f["path"]):
