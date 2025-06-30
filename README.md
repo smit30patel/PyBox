@@ -61,3 +61,8 @@ While PyBox is a solo project for now, suggestions, ideas, and feedback are alwa
 
 If you’d like to learn more or collaborate in the future, feel free to reach out via my GitHub profile or LinkedIn.
 
+---
+
+## 🔗 Follow me on Linkedin 
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://www.linkedin.com/in/smit3062/)
+
