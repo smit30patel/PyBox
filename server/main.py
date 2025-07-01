@@ -26,11 +26,11 @@ async def upload_file(file: UploadFile = File(...)):
     # file_path = os.path.join(DATASET_DIR, f"{file.filename}-{file_id}")
     # with open(file_path, "wb") as f:
     #     shutil.copyfileobj(file.file, f)
-    # file_registry[file_id] = {
+    # file_registry[file_id] = { 
     #     "id": file_id, 
     #     "filename": file.filename,
-    #     "path": file_path,
-    #     "owner": "user@example.com",   
+    #     "path": file_path, 
+    #     "owner": "user@example.com",    
     #     "share_id": None
     # }
     # return JSONResponse(status_code=200, content={"Success": "Uploaded File Successfully", "filename": file.filename})

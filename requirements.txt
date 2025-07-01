@@ -1,3 +1,6 @@
 uvicorn = "0.34.3"
 fastapi
 pydentic 
+flask
+flask_cors
+uuid
